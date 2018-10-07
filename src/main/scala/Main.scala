@@ -56,6 +56,30 @@ object Main {
 
     println( List(1, 2, 3).copy )
     println( List().copy )
+    println()
+
+    println( List(1, 2) appendRight List(3) )
+    println( List() appendRight List() )
+    println( List() appendRight List("Hello") )
+    println()
+
+    println( List(1, 2) appendLeft List(3) )
+    println( List() appendLeft List() )
+    println( List() appendLeft List("Hello") )
+    println()
+
+    println( List(1, 2).addOne )
+    println( List().addOne )
+    println( List(-1, -2, -3).addOne )
+    println()
+
+    println( List(1, 2).convert )
+    println( List().convert )
+    println( List(-1, -2, -3).convert )
+    println()
+
+    println( List(1, 2, 3) flatMap { x => List(x, x) } )
+    println( List(1, 0, 3, -1, 3) filter { _ > 0 } )
   }
 
   def msg = "I was compiled by dotty :)"

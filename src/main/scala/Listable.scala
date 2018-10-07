@@ -13,10 +13,16 @@ trait Listable[E[_]] {
   def sum(l: E[Int]): Int
   def product(l: E[Int]): Int
   def append[A](xs: E[A], ys: E[A]): E[A]
+  def appendRight[A](xs: E[A], ys: E[A]): E[A]
+  def appendLeft[A](xs: E[A], ys: E[A]): E[A]
   def init[A](l: E[A]): E[A]
   def reverse[A](l: E[A]): E[A]
   def copy[A](l: E[A]): E[A]
+  def addOne(l: E[Int]): E[Int]
+  def convert(l: E[Int]): E[String]
   def map[A, B](l: E[A])(f: A => B): E[B]
+  def flatMap[A, B](l: E[A])(f: A => E[B]): E[B]
+  def filter[A](l: E[A])(f: A => Boolean): E[A]
 }
 
 object ListableSyntax {
@@ -26,16 +32,22 @@ object ListableSyntax {
     def dropWhile(f: A => Boolean): E[A] = listable.dropWhile(E, f)
     def foldRight[B](f: (A, B) => B, z: B): B = listable.foldRight(E, z)(f)
     def foldLeft[B](f: (B, A) => B, z: B): B = listable.foldLeft(E, z)(f)
-    def map[B](f: A => B): E[B] = listable.map(E)(f)
     def append(l: E[A]): E[A] = listable.append(E, l)
+    def appendRight(l: E[A]): E[A] = listable.appendRight(E, l)
+    def appendLeft(l: E[A]): E[A] = listable.appendLeft(E, l)
     def init: E[A] = listable.init(E)
     def reverse: E[A] = listable.reverse(E)
     def copy: E[A] = listable.copy(E)
+    def map[B](f: A => B): E[B] = listable.map(E)(f)
+    def flatMap[B](f: A => E[B]): E[B] = listable.flatMap(E)(f)
+    def filter(f: A => Boolean): E[A] = listable.filter(E)(f)
   }
 
   implicit class ListableOpsInt[E[Int]](E: E[Int])(implicit listable: Listable[E]) {
     def sum: Int = listable.sum(E)
     def product: Int = listable.product(E)
+    def addOne: E[Int] = listable.addOne(E)
+    def convert: E[String] = listable.convert(E)
   }
 }
 
@@ -65,12 +77,17 @@ object ListableInstances {
         case Cons(h, t)   => Cons(h, init(t))
       }
 
-
     def append[A](xs: List[A], ys: List[A]): List[A] =
       xs match {
         case Nil        => ys
         case Cons(h, t) => Cons(h, append(t, ys))
       }
+
+    def appendRight[A](xs: List[A], ys: List[A]): List[A] =
+      foldRight(xs, ys)(Cons(_, _))
+
+    def appendLeft[A](xs: List[A], ys: List[A]): List[A] =
+      foldLeft(reverse(xs), ys)((t, h) => Cons(h, t))
 
     def sum(l: List[Int]): Int = foldRight(l, 0)(_ + _)
     def product(l: List[Int]): Int = foldRight(l, 1)(_ * _)
@@ -103,9 +120,15 @@ object ListableInstances {
       (l, n) match {
         case (Nil, _)         => Nil
         case (_, 0)           => l
-        case  (Cons(h, t), n) => drop(t, n - 1)
+        case (Cons(h, t), n)  => drop(t, n - 1)
       }
     }
+
+    def addOne(l: List[Int]): List[Int] =
+      foldRight(l, Nil: List[Int])((h, t) => Cons(h + 1, t))
+
+    def convert(l: List[Int]): List[String] =
+      foldRight(l, Nil: List[String])((h, t) => Cons(s"'${h.toString}'", t))
 
     def map[A, B](l: List[A])(f: A => B): List[B] = {
       l match {
@@ -113,5 +136,12 @@ object ListableInstances {
         case Cons(h, t) => Cons(f(h), map(t)(f))
       }
     }
+
+    def flatMap[A, B](l: List[A])(f: A => List[B]): List[B] =
+      foldRight(l, Nil: List[B])((h, t) => append(f(h), t))
+
+    def filter[A](l: List[A])(f: A => Boolean): List[A] =
+      flatMap(l)(x => if (f(x)) List(x) else List())
+
   }
 }
