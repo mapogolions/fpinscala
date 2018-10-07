@@ -1,4 +1,4 @@
-package io.github.mapogolions.fpinscala
+package io.github.mapogolions.fpinscala.ch03.typeclass
 
 
 sealed trait List[+A]

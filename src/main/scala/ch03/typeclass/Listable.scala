@@ -1,6 +1,6 @@
-package io.github.mapogolions.fpinscala
+package io.github.mapogolions.fpinscala.ch03.typeclass
 
-import io.github.mapogolions.fpinscala._
+import io.github.mapogolions.fpinscala.ch03.typeclass._
 
 
 /* E - from embellished */
