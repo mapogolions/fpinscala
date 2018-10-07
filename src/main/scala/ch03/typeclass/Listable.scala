@@ -23,6 +23,7 @@ trait Listable[E[_]] {
   def map[A, B](l: E[A])(f: A => B): E[B]
   def flatMap[A, B](l: E[A])(f: A => E[B]): E[B]
   def filter[A](l: E[A])(f: A => Boolean): E[A]
+  def zip[A, B](xs: E[A], ys: E[A])(f: (A, A) => B): E[B]
 }
 
 object ListableSyntax {
@@ -41,6 +42,7 @@ object ListableSyntax {
     def map[B](f: A => B): E[B] = listable.map(E)(f)
     def flatMap[B](f: A => E[B]): E[B] = listable.flatMap(E)(f)
     def filter(f: A => Boolean): E[A] = listable.filter(E)(f)
+    def zip(l: E[A]): E[(A, A)] = listable.zip(E, l)((a, b) => (a, b))
   }
 
   implicit class ListableOpsInt[E[Int]](E: E[Int])(implicit listable: Listable[E]) {
@@ -53,6 +55,12 @@ object ListableSyntax {
 
 object ListableInstances {
   implicit val list: Listable[List] = new Listable[List] {
+    def zip[A, B](xs: List[A], ys: List[A])(f: (A, A) => B) =
+      (xs, ys) match {
+        case (Cons(h1, t1), Cons(h2, t2)) => Cons(f(h1, h2), zip(t1, t2)(f))
+        case _ => Nil
+      }
+
     def length[A](l: List[A]): Int = {
       @annotation.tailrec
       def loop(l: List[A], counter: Int): Int = {
@@ -142,6 +150,5 @@ object ListableInstances {
 
     def filter[A](l: List[A])(f: A => Boolean): List[A] =
       flatMap(l)(x => if (f(x)) List(x) else List())
-
   }
 }

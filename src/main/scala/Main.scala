@@ -9,6 +9,9 @@ object Main {
   def main(args: Array[String]): Unit = {
     println(msg)
     println(List(1, -1, 2, -10, 0, 200) filter { _ > 0 } )
+    println()
+
+    println(List('a', 'b', 'c') zip List(1, 2, 3))
   }
 
   def msg = "I was compiled by dotty :)"
