@@ -1,6 +1,6 @@
 package io.github.mapogolions.fpinscala.ch03.typeclass
 
-import io.github.mapogolions.fpinscala.ch03.typeclass._
+import io.github.mapogolions.fpinscala.ch03.typeclass.{ List, Nil, Cons }
 
 
 /* E - from embellished */
@@ -21,6 +21,8 @@ trait Listable[E[_]] {
   def addOne(l: E[Int]): E[Int]
   def convert(l: E[Int]): E[String]
   def map[A, B](l: E[A])(f: A => B): E[B]
+  def containsWhere[A](l: E[A])(f: A => Boolean): Boolean
+  def findWhere[A](l: E[A])(f: A => Boolean): Option[A]
   def flatMap[A, B](l: E[A])(f: A => E[B]): E[B]
   def filter[A](l: E[A])(f: A => Boolean): E[A]
   def zip[A, B](xs: E[A], ys: E[A])(f: (A, A) => B): E[B]
@@ -39,6 +41,8 @@ object ListableSyntax {
     def init: E[A] = listable.init(E)
     def reverse: E[A] = listable.reverse(E)
     def copy: E[A] = listable.copy(E)
+    def containsWhere(f: A => Boolean): Boolean = listable.containsWhere(E)(f)
+    def findWhere(f: A => Boolean): Option[A] = listable.findWhere(E)(f)
     def map[B](f: A => B): E[B] = listable.map(E)(f)
     def flatMap[B](f: A => E[B]): E[B] = listable.flatMap(E)(f)
     def filter(f: A => Boolean): E[A] = listable.filter(E)(f)
@@ -55,6 +59,22 @@ object ListableSyntax {
 
 object ListableInstances {
   implicit val list: Listable[List] = new Listable[List] {
+    @annotation.tailrec
+    def findWhere[A](l: List[A])(f: A => Boolean): Option[A] = {
+      l match {
+        case Nil => None
+        case Cons(h, t) => if (f(h)) Some(h) else findWhere(t)(f)
+      }
+    }
+
+    @annotation.tailrec
+    def containsWhere[A](l: List[A])(f: A => Boolean): Boolean = {
+      l match {
+        case Nil => false
+        case Cons(h, t) => if (f(h)) true else containsWhere(t)(f)
+      }
+    }
+
     def zip[A, B](xs: List[A], ys: List[A])(f: (A, A) => B) =
       (xs, ys) match {
         case (Cons(h1, t1), Cons(h2, t2)) => Cons(f(h1, h2), zip(t1, t2)(f))
