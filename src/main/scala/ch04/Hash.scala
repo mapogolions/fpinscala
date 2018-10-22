@@ -10,11 +10,13 @@ import ListableSyntax._
 import ListableInstances._
 
 class HashTable[K, V] { self =>
-  val size = 100
-  val table = Array.fill(size){ List(): List[Node[K, V]] }
+  private val capacity = 16
+  private val table = Array.fill(capacity){ List(): List[Node[K, V]] }
 
-  def hash(key: K): Int = key.hashCode.abs % size
-  
+  def trace = table foreach println
+
+  private def hash(key: K): Int = key.hashCode.abs % capacity
+
   def put(pair: (K, V)) = {
     val (key, value) = pair
     val index = hash(key)
@@ -31,7 +33,7 @@ class HashTable[K, V] { self =>
     res match {
       case Some(v) if (v == value) => {
         val index = hash(key)
-        table(index) = table(index) filter { _.key == key }
+        table(index) = table(index) filter { _.key != key }
         res
       }
       case _ => None
@@ -40,10 +42,10 @@ class HashTable[K, V] { self =>
 
   def remove(key: K): Option[V] = {
     get(key) match {
-      case None => None
-      case value    => {
+      case None  => None
+      case value => {
         val index = hash(key)
-        table(index) = table(index) filter { _.key == key }
+        table(index) = table(index) filter { _.key != key }
         value
       } 
     }
@@ -70,7 +72,7 @@ class HashTable[K, V] { self =>
   def containsKey(key: K): Boolean = table(hash(key)) containsWhere { _.key == key}
 }
 
-case class Node[K, V](
+private case class Node[K, V](
   val key: K, 
   val value: V
 )
