@@ -9,6 +9,15 @@ import io.github.mapogolions.fpinscala.ch04.linkedlist._
 
 class TestLinkedList {
   @Test
+  def removeTest: Unit = {
+    val ls = LinkedList[Char]()
+    for (ch <- "yes") ls.add(ch)
+    assertEquals(ls.size, 3)
+    assertEquals(ls.remove(2), Some('s'))
+    assertEquals(ls.size, 2)
+  }
+
+  @Test
   def getTest: Unit = {
     val ls = LinkedList[Char]()
     for (ch <- "todo") ls.add(ch)
@@ -142,16 +151,5 @@ class TestLinkedList {
     ls.removeFirst
     assertEquals(ls.removeFirst, None)
     assertEquals(ls.size, 0)
-
-    // assertEquals(MyList.sum(MyList(2, 5)), 7)
-
-    // assertThat(
-    //   10,
-    //   allOf(
-    //     equalTo(MyList.sum(MyList(10))),
-    //     equalTo(MyList.sum(MyList(-10, 20))),
-    //     equalTo(MyList.sum(MyList(200, -190)))
-    //   )
-    // )
   }
 }
