@@ -1,13 +1,33 @@
 package io.github.mapogolions.fpinscala.ch04.linkedlist
 
 
-case class LinkedList[A](private var head: Option[Bucket[A]] = None) {
+class LinkedList[A] {
   type T[A] = Option[Bucket[A]]
 
-  private var _size = 0
-  def size = _size
+  case class Bucket[A](
+    var data: A,
+    var next: T[A] = None
+  )
 
+  private var head: T[A] = None
+  private var _size = 0
+
+
+  def size = _size
   def element = head
+  def contains(value: A): Boolean = if (indexOf(value) != -1) true else false
+
+  def isEmpty: Boolean = head match {
+    case None => true
+    case _    => false
+  }
+
+  def clear: Unit = {
+    if (!isEmpty) {
+      _size = 0
+      head = None
+    }
+  }
 
   def add(value: A): Boolean = {
     last match {
@@ -17,8 +37,6 @@ case class LinkedList[A](private var head: Option[Bucket[A]] = None) {
     _size += 1
     true
   }
-
-  def contains(value: A): Boolean = if (indexOf(value) != -1) true else false
 
   def indexOf(value: A): Int = {
     @annotation.tailrec
@@ -115,23 +133,11 @@ case class LinkedList[A](private var head: Option[Bucket[A]] = None) {
     elem
   }
 
-  def isEmpty: Boolean = head match {
-    case None => true
-    case _    => false
-  }
-
-  def last: T[A] = search(size - 1)
-  def lastButOne: T[A] = search(size - 2)
-
-  def clear: Unit = {
-    if (!isEmpty) {
-      _size = 0
-      head = None
-    }
-  }
+  private def last: T[A] = search(size - 1)
+  private def lastButOne: T[A] = search(size - 2)
 }
 
-case class Bucket[A](
-  var data: A,
-  var next: Option[Bucket[A]] = None
-)
+
+object LinkedList {
+  def apply[A](): LinkedList[A] = new LinkedList()
+}

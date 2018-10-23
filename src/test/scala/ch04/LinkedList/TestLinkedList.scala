@@ -34,7 +34,7 @@ class TestLinkedList {
   def lastAndLastButOneTest: Unit = {
     val ls = LinkedList[Char]()
     for (ch <- "yes") ls.add(ch)
-    assertEquals(ls.last, Some(Bucket('s')))
+    assertEquals(ls.getLast, Some('s'))
     ls.removeLast
     assertEquals(ls.size, 2)
     assertEquals(ls.removeLast, Some('e'))
@@ -79,35 +79,12 @@ class TestLinkedList {
   }
 
   @Test
-  def lastButOne: Unit = {
-    val ls = LinkedList[Char]()
-    ls.add('a')
-    ls.add('b')
-    ls.add('c')
-    assertEquals(ls.lastButOne, Some(Bucket('b', Some(Bucket('c', None)))))
-    ls.removeFirst
-    assertEquals(ls.lastButOne, Some(Bucket('b', Some(Bucket('c', None)))))
-    ls.removeFirst
-    assertEquals(ls.lastButOne, None)
-
-    val codes = LinkedList[Int]()
-    for (code <- 90 to 100) codes.add(code)
-    assertEquals(
-      (codes.last, codes.lastButOne),
-      (Some(Bucket(100)), Some((Bucket(99, Some(Bucket(100, None))))))
-    )
-
-  }
-
-  @Test
   def clearTest: Unit = {
     val ls = LinkedList[Int]()
     assertEquals(ls.element, None)
     for (i <- 1 to 100) ls.add(i)
-    assertEquals(ls.last, Some(Bucket(100)))
     ls.clear
     assertEquals(ls.size, 0)
-    assertEquals(ls.element, ls.last)
     assertEquals(ls.element, None)
   }
 
@@ -119,37 +96,5 @@ class TestLinkedList {
     for (i <- 1 to 50) ls.removeFirst
     assertEquals(ls.size, 50)
     assertEquals(ls.element.get.data, 51)
-  }
-
-
-  @Test
-  def initLinkedList(): Unit = {
-    val ls = LinkedList[Int]()
-    assertTrue(ls isEmpty)
-    assertTrue(ls.add(2))
-    assertTrue(ls.add(3))
-    assertFalse(ls.isEmpty)
-
-    assertEquals(ls.last, Some(Bucket(3)))
-    assertEquals(ls.element, Some(Bucket(2, Some(Bucket(3)))))
-    assertEquals(ls.size, 2)
-    assertEquals(ls.removeFirst, Some(2))
-    assertEquals(ls.size, 1)
-    assertEquals(ls.element, ls.last)
-    assertEquals(ls.removeFirst, Some(3))
-    assertEquals(ls.size, 0)
-    ls.add(4)
-    ls.add(5)
-    ls.add(6)
-    assertEquals(ls.size, 3)
-    assertEquals(ls.element, Some(Bucket(4, Some(Bucket(5, Some(Bucket(6)))))))
-    assertEquals(ls.removeFirst, Some(4))
-    assertEquals(ls.element, Some(Bucket(5, Some(Bucket(6)))))
-    ls.removeFirst
-    assertEquals(ls.size, 1)
-    ls.removeFirst
-    ls.removeFirst
-    assertEquals(ls.removeFirst, None)
-    assertEquals(ls.size, 0)
   }
 }
