@@ -65,10 +65,9 @@ case class LinkedList[A](private var head: Option[Bucket[A]] = None) {
     recur(head)
   }
 
-
-  def get(n: Int): Option[A] = (ripOff compose search)(n)
-  def getFirst: Option[A] = ripOff(head)
-  def getLast: Option[A] = ripOff(last)
+  def get(n: Int): Option[A] = (ripoff compose search)(n)
+  def getFirst: Option[A] = ripoff(head)
+  def getLast: Option[A] = ripoff(last)
 
   def remove(n: Int): Option[A] = {
     if (isEmpty) None
@@ -76,7 +75,7 @@ case class LinkedList[A](private var head: Option[Bucket[A]] = None) {
     else {
       val elem = search(n - 1)
       elem match {
-        case Some(Bucket(data, next)) if (next != None) => (ripOff compose renext)(elem)
+        case Some(Bucket(data, next)) if (next != None) => ripoff(reassign(elem))
         case _ => None
       }
     }
@@ -85,46 +84,40 @@ case class LinkedList[A](private var head: Option[Bucket[A]] = None) {
   def removeLast: Option[A] =
     if (isEmpty) None
     else if (size == 1) removeFirst
-    else (ripOff compose relast)(lastButOne)
+    else ripoff(reassign(lastButOne))
 
   def removeFirst: Option[A] =
-    if (isEmpty) None else (ripOff compose refirst)(head)
+    if (isEmpty) None else ripoff(reassignHead(head))
 
-  private def ripOff(elem: T[A]): Option[A] =
+  private def ripoff(elem: T[A]): Option[A] =
     elem match {
       case Some(Bucket(data, _)) => Some(data)
       case _ => None
     }
 
-  private def renext(elem: T[A]): T[A] = {
-    val buck1 = elem.get
-    val elem2 = buck1.next
-    val buck2 = elem2.get
-    buck1.next = buck2.next
-    buck2.next = None
+  private def reassign(elem: T[A], value: T[A]=None): T[A] = {
+    val bucket = elem.get
+    val elem2 = bucket.next
+    val bucket2 = elem2.get
+    bucket.next = bucket2.next
+    bucket2.next = value
+    // println(s"Reassign: ${elem2}")
     _size -= 1
     elem2
   }
 
-  private def relast(elem: T[A]): T[A] = {
-    val bucket = elem.get
-    val tmp = bucket.next
-    bucket.next = None
-    _size -= 1
-    tmp
-  }
-
-  private def refirst(elem: T[A]): T[A] = {
+  private def reassignHead(elem: T[A], value: T[A]=None): T[A] = {
     val bucket = elem.get
     head = bucket.next
-    bucket.next = None
+    bucket.next = value
+    // println(s"Reassign: ${elem}")
     _size -= 1
     elem
   }
 
   def isEmpty: Boolean = head match {
     case None => true
-    case _ => false
+    case _    => false
   }
 
   def last: T[A] = search(size - 1)
