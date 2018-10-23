@@ -9,33 +9,53 @@ import io.github.mapogolions.fpinscala.ch04.linkedlist._
 
 class TestLinkedList {
   @Test
-  def lastIndexOfTest: Unit = {
-    val ls = LinkedList[Int]()
-    for (i <- 1 to 10)
-      ls.add(i)
-
-    assertEquals(ls.indexOf(10), 9)
-    assertEquals(ls.lastIndexOf(10), ls.indexOf(10))
-    for (i <- 1 to 10)
-      ls.add(i)
-    assertEquals(ls.indexOf(10), 9)
-    assertEquals(ls.lastIndexOf(10), 19)
+  def getTest: Unit = {
+    val ls = LinkedList[Char]()
+    for (ch <- "todo") ls.add(ch)
+    assertEquals(ls.getLast, Some('o'))
+    assertEquals(ls.getFirst, Some('t'))
+    assertEquals(ls.get(2), Some('d'))
+    ls.removeFirst
+    assertEquals(ls.getFirst, Some('o'))
+    assertEquals(ls.getFirst, ls.get(0))
+    assertEquals(ls.getLast, ls.get(ls.size - 1))
   }
 
   @Test
-  def getLastAndgFirst: Unit = {
-    val ls = LinkedList[String]()
-    for (elem <- "i love this game".split(" "))
-      ls.add(elem)
-    assertEquals(ls.getFirst, Some("i"))
-    assertEquals(ls.getLast, Some("game"))
-    assertEquals(ls.removeFirst, Some(Bucket("i")))
-    assertEquals(ls.getFirst, Some("love"))
-    assertEquals(ls.removeLast, Some(Bucket("game")))
-    assertEquals(ls.getLast, Some("this"))
-    assertEquals(ls.removeLast, Some(Bucket("this")))
-    assertEquals(ls.getLast, Some("love"))
-    assertEquals(ls.size, 1)
+  def lastAndLastButOneTest: Unit = {
+    val ls = LinkedList[Char]()
+    for (ch <- "yes") ls.add(ch)
+    assertEquals(ls.last, Some(Bucket('s')))
+    ls.removeLast
+    assertEquals(ls.size, 2)
+    assertEquals(ls.removeLast, Some('e'))
+    assertEquals(ls.removeLast, Some('y'))
+  }
+
+  @Test
+  def searchTest: Unit = {
+    val ls =  LinkedList[Char]()
+    for (ch <- "hello") ls.add(ch)
+    assertEquals(ls.get(0), Some('h'))
+    assertEquals(ls.get(ls.size-1), Some('o'))
+  }
+
+  @Test
+  def containsTest: Unit = {
+    val ls =  LinkedList[Char]()
+    for (ch <- "hello") ls.add(ch)
+    assertTrue(ls.contains('h'))
+    assertFalse(ls.contains('d'))
+    assertTrue(ls.contains('o'))
+  }
+
+  @Test
+  def lastIndexOfTest: Unit = {
+    val ls = LinkedList[Char]()
+    for (ch <- "hello") ls.add(ch)
+    assertEquals(ls.indexOf('o'), ls.size - 1)
+    assertEquals(ls.lastIndexOf('l'), 3)
+    assertEquals(ls.indexOf('l'), 2)
   }
 
   @Test
@@ -104,17 +124,17 @@ class TestLinkedList {
     assertEquals(ls.last, Some(Bucket(3)))
     assertEquals(ls.element, Some(Bucket(2, Some(Bucket(3)))))
     assertEquals(ls.size, 2)
-    assertEquals(ls.removeFirst, Some(Bucket(2)))
+    assertEquals(ls.removeFirst, Some(2))
     assertEquals(ls.size, 1)
     assertEquals(ls.element, ls.last)
-    assertEquals(ls.removeFirst, Some(Bucket(3)))
+    assertEquals(ls.removeFirst, Some(3))
     assertEquals(ls.size, 0)
     ls.add(4)
     ls.add(5)
     ls.add(6)
     assertEquals(ls.size, 3)
     assertEquals(ls.element, Some(Bucket(4, Some(Bucket(5, Some(Bucket(6)))))))
-    assertEquals(ls.removeFirst, Some(Bucket(4)))
+    assertEquals(ls.removeFirst, Some(4))
     assertEquals(ls.element, Some(Bucket(5, Some(Bucket(6)))))
     ls.removeFirst
     assertEquals(ls.size, 1)
