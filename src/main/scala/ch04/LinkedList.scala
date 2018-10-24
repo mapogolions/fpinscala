@@ -62,7 +62,14 @@ class LinkedList[A] {
     true
   }
 
-  def insertAfter = ???
+  def update(value: A, n: Int): Boolean =
+    search(n) match {
+      case None => false
+      case Some(bucket) => {
+        bucket.data = value
+        true
+      }
+    }
 
   def indexOf(value: A): Int = {
     @annotation.tailrec
