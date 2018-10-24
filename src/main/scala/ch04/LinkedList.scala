@@ -29,7 +29,22 @@ class LinkedList[A] {
     }
   }
 
-  def add(value: A): Boolean = {
+  def push(value: A, n: Int): Boolean = {
+    if (n == 0) pushFront(value)
+    else {
+      val prev = search(n - 1)
+      prev match {
+        case None => false
+        case Some(Bucket(_, next)) => {
+          prev.get.next = Some(Bucket(value, next))
+          _size += 1
+          true
+        }
+      }
+    }
+  }
+
+  def pushBack(value: A): Boolean = {
     last match {
       case None => head = Some(Bucket(value))
       case Some(bucket) => bucket.next = Some(Bucket(value))
@@ -37,6 +52,17 @@ class LinkedList[A] {
     _size += 1
     true
   }
+
+  def pushFront(value: A): Boolean = {
+    head match {
+      case None => head = Some(Bucket(value))
+      case Some(Bucket(data, next)) => head = Some(Bucket(value, head))
+    }
+    _size += 1
+    true
+  }
+
+  def insertAfter = ???
 
   def indexOf(value: A): Int = {
     @annotation.tailrec

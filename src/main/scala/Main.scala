@@ -5,17 +5,7 @@ import io.github.mapogolions.fpinscala.ch04.linkedlist._
 
 object Main {
   def main(args: Array[String]): Unit = {
-    val ls = LinkedList[Char]()
-
-    for (i <- "i love this game")
-      ls.add(i)
-
-    println(ls.element)
-    println()
-    println(ls.remove(3))
-    println()
-    println(ls.remove(7))
-    println(ls.removeLast)
+    println(msg)
   }
 
   def msg = "I was compiled by dotty :)"
