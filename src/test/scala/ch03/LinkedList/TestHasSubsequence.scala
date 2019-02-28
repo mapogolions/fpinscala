@@ -1,4 +1,4 @@
-package io.github.mapogolions.fpinscala.ch03.raw
+package io.github.mapogolions.fpinscala.ch03
 
 import org.junit.Test
 import org.junit.Assert._
@@ -11,8 +11,8 @@ class TestHasSubsequence {
   // Simple cases
   @Test
   def testHasSubsequence(): Unit = {
-    assertTrue(MyList.hasSubsequence(Nil, Nil))
-    assertFalse(MyList.hasSubsequence(Nil, Cons(1, Nil)))
+    assertTrue(MyList.hasSubsequence(EmptyList, EmptyList))
+    assertFalse(MyList.hasSubsequence(EmptyList, Cons(1, EmptyList)))
     assertTrue(MyList.hasSubsequence(MyList(1, 2, 3), MyList(1)))
     assertTrue(MyList.hasSubsequence(MyList(1, 2, 3), MyList(1, 2, 3)))
 

@@ -1,4 +1,4 @@
-package io.github.mapogolions.fpinscala.ch03.raw
+package io.github.mapogolions.fpinscala.ch03
 
 import org.junit.Test
 import org.junit.Assert._

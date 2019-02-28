@@ -1,4 +1,4 @@
-package io.github.mapogolions.fpinscala.ch03.raw
+package io.github.mapogolions.fpinscala.ch03
 
 import org.junit.Test
 import org.junit.Assert._
@@ -35,15 +35,4 @@ class TestFold {
       MyList.foldLeftInTermsOfRight(MyList(3, 4, 9), 0)((a, b) => a + b),
       16
     )
-
-    // assertEquals(MyList.sum(MyList(2, 5)), 7)
-    //
-    // assertThat(
-    //   10,
-    //   allOf(
-    //     equalTo(MyList.sum(MyList(10))),
-    //     equalTo(MyList.sum(MyList(-10, 20))),
-    //     equalTo(MyList.sum(MyList(200, -190)))
-    //   )
-    // )
 }

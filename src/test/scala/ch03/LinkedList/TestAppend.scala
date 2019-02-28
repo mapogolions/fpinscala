@@ -1,4 +1,4 @@
-package io.github.mapogolions.fpinscala.ch03.raw
+package io.github.mapogolions.fpinscala.ch03
 
 import org.junit.Test
 import org.junit.Assert._
@@ -11,18 +11,18 @@ class TestAppend {
   @Test
   def testAppend(): Unit = {
     assertEquals(
-      MyList.append(MyList(1, 2), Nil),
+      MyList.append(MyList(1, 2), EmptyList),
       MyList(1, 2)
     )
 
     assertEquals(
-      MyList.append(Nil, MyList('a', 'b')),
+      MyList.append(EmptyList, MyList('a', 'b')),
       MyList('a', 'b')
     )
 
     assertEquals(
       MyList.append(MyList(1, 2), MyList(10, 11)),
-      Cons(1, Cons(2, Cons(10, Cons(11, Nil))))
+      Cons(1, Cons(2, Cons(10, Cons(11, EmptyList))))
     )
   }
 }

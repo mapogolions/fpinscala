@@ -1,4 +1,4 @@
-package io.github.mapogolions.fpinscala.ch03.raw
+package io.github.mapogolions.fpinscala.ch03
 
 import org.junit.Test
 import org.junit.Assert._
@@ -10,18 +10,18 @@ import org.hamcrest.CoreMatchers.equalTo
 class TestReverse {
   @Test
   def testAppendLeft(): Unit =
-    assertEquals(MyList.appendLeft(MyList(1), MyList(2)), Cons(1, Cons(2, Nil)))
+    assertEquals(MyList.appendLeft(MyList(1), MyList(2)), Cons(1, Cons(2, EmptyList)))
 
   @Test
   def testAppendRight(): Unit =
     assertEquals(
       MyList.appendRight(MyList(1), MyList(2)),
-      Cons(1, Cons(2, Nil))
+      Cons(1, Cons(2, EmptyList))
     )
 
   @Test
   def testCopy(): Unit =
-    assertEquals(MyList.copy(MyList(1, 3)), Cons(1, Cons(3, Nil)))
+    assertEquals(MyList.copy(MyList(1, 3)), Cons(1, Cons(3, EmptyList)))
 
   @Test
   def testReverse(): Unit = {
@@ -30,7 +30,7 @@ class TestReverse {
     assertThat(
       MyList(1, -2),
       allOf(
-        equalTo(MyList.reverse(Cons(-2, Cons(1, Nil)))),
+        equalTo(MyList.reverse(Cons(-2, Cons(1, EmptyList)))),
       )
     )
   }

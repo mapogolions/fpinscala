@@ -1,4 +1,4 @@
-package io.github.mapogolions.fpinscala.ch03.raw
+package io.github.mapogolions.fpinscala.ch03
 
 import org.junit.Test
 import org.junit.Assert._
@@ -17,7 +17,7 @@ class TestFilter {
 
     assertEquals(
       MyList.filter(MyList(1, -12, 3, 4))( _ > 0),
-      Cons(1, Cons(3, Cons(4, Nil)))
+      Cons(1, Cons(3, Cons(4, EmptyList)))
     )
 
     assertEquals(

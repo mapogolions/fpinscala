@@ -1,4 +1,4 @@
-package io.github.mapogolions.fpinscala.ch03.raw
+package io.github.mapogolions.fpinscala.ch03
 
 import org.junit.Test
 import org.junit.Assert._
@@ -17,7 +17,7 @@ class TestMap {
 
     assertEquals(
       MyList.map(MyList(1, 2, 3, 4))(x => x * x),
-      Cons(1, Cons(4, Cons(9, Cons(16, Nil))))
+      Cons(1, Cons(4, Cons(9, Cons(16, EmptyList))))
     )
   }
 }

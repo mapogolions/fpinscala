@@ -1,4 +1,4 @@
-package io.github.mapogolions.fpinscala.ch03.raw
+package io.github.mapogolions.fpinscala.ch03
 
 import org.junit.Test
 import org.junit.Assert._
@@ -16,13 +16,13 @@ class TestInit {
     )
 
     assertEquals(
-      MyList.init(Nil),
-      Nil
+      MyList.init(EmptyList),
+      EmptyList
     )
 
     assertEquals(
-      MyList.init(Cons(1, Nil)),
-      Nil
+      MyList.init(Cons(1, EmptyList)),
+      EmptyList
     )
   }
 }

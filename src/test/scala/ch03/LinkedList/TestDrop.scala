@@ -1,4 +1,4 @@
-package io.github.mapogolions.fpinscala.ch03.raw
+package io.github.mapogolions.fpinscala.ch03
 
 import org.junit.Test
 import org.junit.Assert._
@@ -10,7 +10,7 @@ import org.hamcrest.CoreMatchers.equalTo
 class TestDrop {
   @Test
   def testDrop(): Unit = {
-    assertEquals(MyList.drop(MyList(1, 2, 3), 3), Nil)
+    assertEquals(MyList.drop(MyList(1, 2, 3), 3), EmptyList)
     assertThat(
       MyList(1, -2),
       allOf(
