@@ -7,17 +7,22 @@ import org.hamcrest.CoreMatchers.anyOf
 import org.hamcrest.CoreMatchers.equalTo
 
 
-class TestMap {
+class TestInit {
   @Test
-  def testMap(): Unit = {
+  def testInit(): Unit = {
     assertEquals(
-      MyList.flatMap(MyList(1, 2, 3, 4))(x => MyList(x, x)),
-      MyList(1, 1, 2, 2, 3, 3, 4, 4)
+      ImmutableList.init(ImmutableList(1, 2)),
+      ImmutableList(1)
     )
 
     assertEquals(
-      MyList.map(MyList(1, 2, 3, 4))(x => x * x),
-      Cons(1, Cons(4, Cons(9, Cons(16, EmptyList))))
+      ImmutableList.init(EmptyList),
+      EmptyList
+    )
+
+    assertEquals(
+      ImmutableList.init(Cons(1, EmptyList)),
+      EmptyList
     )
   }
 }

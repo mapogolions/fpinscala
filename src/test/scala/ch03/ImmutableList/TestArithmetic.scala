@@ -10,14 +10,14 @@ import org.hamcrest.CoreMatchers.equalTo
 class TestArithmetic {
   @Test
   def testSum(): Unit = {
-    assertEquals(MyList.sum(MyList(2, 5)), 7)
+    assertEquals(ImmutableList.sum(ImmutableList(2, 5)), 7)
 
     assertThat(
       10,
       allOf(
-        equalTo(MyList.sum(MyList(10))),
-        equalTo(MyList.sum(MyList(-10, 20))),
-        equalTo(MyList.sum(MyList(200, -190)))
+        equalTo(ImmutableList.sum(ImmutableList(10))),
+        equalTo(ImmutableList.sum(ImmutableList(-10, 20))),
+        equalTo(ImmutableList.sum(ImmutableList(200, -190)))
       )
     )
   }

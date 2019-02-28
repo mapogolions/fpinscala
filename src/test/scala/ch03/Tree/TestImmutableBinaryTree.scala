@@ -7,7 +7,7 @@ import org.hamcrest.CoreMatchers.anyOf
 import org.hamcrest.CoreMatchers.equalTo
 
 
-class TestTree {
+class TestImmutableBinaryTree {
   val tree = Node(
     15,
     Node(

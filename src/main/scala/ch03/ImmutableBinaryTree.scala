@@ -1,7 +1,7 @@
 package io.github.mapogolions.fpinscala.ch03
 
 
-sealed trait BinaryTree[+A] { self =>
+sealed trait ImmutableBinaryTree[+A] { self =>
   def size: Int = self match {
     case Leaf => 0
     case Node(data, left, right) => 1 + left.size + right.size
@@ -15,14 +15,15 @@ sealed trait BinaryTree[+A] { self =>
       case Node(data, _, right)  => right member elem
     }
 
-  def insert[B >: A](elem: B)(implicit ord: Ordering[B]): BinaryTree[B] = self match {
-    case Leaf => Node(elem, Leaf, Leaf)
-    case Node(data, left, right) if (ord.compare(elem, data) == -1) => 
-      Node(data, left.insert(elem), right)
-    case Node(data, left, right) if (ord.compare(elem, data) == 0) =>
-      Node(data, left, right)
-    case Node(data, left, right) => Node(data, left, right.insert(elem))
-  }
+  def insert[B >: A](elem: B)(implicit ord: Ordering[B]): ImmutableBinaryTree[B] = 
+    self match {
+      case Leaf => Node(elem, Leaf, Leaf)
+      case Node(data, left, right) if (ord.compare(elem, data) == -1) => 
+        Node(data, left.insert(elem), right)
+      case Node(data, left, right) if (ord.compare(elem, data) == 0) =>
+        Node(data, left, right)
+      case Node(data, left, right) => Node(data, left, right.insert(elem))
+    }
 
   def inOrder: Seq[A] = self match {
     case Node(data, left, right) => left.inOrder ++ Seq(data) ++ right.inOrder
@@ -40,9 +41,9 @@ sealed trait BinaryTree[+A] { self =>
   }
 }
 
-case object Leaf extends BinaryTree[Nothing]
+case object Leaf extends ImmutableBinaryTree[Nothing]
 case class Node[A](
   val data: A, 
-  val left: BinaryTree[A],
-  val right: BinaryTree[A]
-) extends BinaryTree[A]
+  val left: ImmutableBinaryTree[A],
+  val right: ImmutableBinaryTree[A]
+) extends ImmutableBinaryTree[A]

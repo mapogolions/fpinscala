@@ -10,27 +10,27 @@ import org.hamcrest.CoreMatchers.equalTo
 class TestReverse {
   @Test
   def testAppendLeft(): Unit =
-    assertEquals(MyList.appendLeft(MyList(1), MyList(2)), Cons(1, Cons(2, EmptyList)))
+    assertEquals(ImmutableList.appendLeft(ImmutableList(1), ImmutableList(2)), Cons(1, Cons(2, EmptyList)))
 
   @Test
   def testAppendRight(): Unit =
     assertEquals(
-      MyList.appendRight(MyList(1), MyList(2)),
+      ImmutableList.appendRight(ImmutableList(1), ImmutableList(2)),
       Cons(1, Cons(2, EmptyList))
     )
 
   @Test
   def testCopy(): Unit =
-    assertEquals(MyList.copy(MyList(1, 3)), Cons(1, Cons(3, EmptyList)))
+    assertEquals(ImmutableList.copy(ImmutableList(1, 3)), Cons(1, Cons(3, EmptyList)))
 
   @Test
   def testReverse(): Unit = {
-    assertEquals(MyList.reverse(MyList('a', 'b', 'c')), MyList('c', 'b', 'a'))
+    assertEquals(ImmutableList.reverse(ImmutableList('a', 'b', 'c')), ImmutableList('c', 'b', 'a'))
 
     assertThat(
-      MyList(1, -2),
+      ImmutableList(1, -2),
       allOf(
-        equalTo(MyList.reverse(Cons(-2, Cons(1, EmptyList)))),
+        equalTo(ImmutableList.reverse(Cons(-2, Cons(1, EmptyList)))),
       )
     )
   }
